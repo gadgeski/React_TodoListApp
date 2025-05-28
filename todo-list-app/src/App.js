@@ -47,33 +47,51 @@ function App() {
       <h1>TODOリスト</h1>
 
       {/* TODO追加フォーム */}
-      <form onSubmit={addTodo}>
+      <form onSubmit={addTodo} className="todo-form">
         <input
           type="text"
           value={newTodoText}
           onChange={(e) => setNewTodoText(e.target.value)} // 入力値が変更されるたびにステートを更新
           placeholder="新しいTODOを入力"
+          className="todo-input"
         />
-        <button type="submit">追加</button>
+        <button type="submit" className="add-button">
+          追加
+        </button>
       </form>
 
       {/* TODOリストの表示 */}
-      <ul>
-        {/* todos配列をマップして各TODOアイテムをレンダリング */}
-        {todos.map((todo) => (
-          <li
-            key={todo.id}
-            style={{ textDecoration: todo.completed ? "line-through" : "none" }}
-          >
-            {todo.text}
-            <button onClick={() => toggleComplete(todo.id)}>
-              {todo.completed ? "未完了にする" : "完了"}
-            </button>
-            <button onClick={() => deleteTodo(todo.id)}>削除</button>
-          </li>
-        ))}
-        {todos.length === 0 && <p>TODOはありません。</p>}
-      </ul>
+      {todos.length > 0 ? (
+        <ul className="todo-list">
+          {/* todos配列をマップして各TODOアイテムをレンダリング */}
+          {todos.map((todo) => (
+            <li
+              key={todo.id}
+              className={`todo-item ${todo.completed ? "completed" : ""}`}
+            >
+              <span className="todo-text">{todo.text}</span>
+              <div className="todo-actions">
+                <button
+                  onClick={() => toggleComplete(todo.id)}
+                  className="complete-button"
+                >
+                  {todo.completed ? "未完了にする" : "完了"}
+                </button>
+                <button
+                  onClick={() => deleteTodo(todo.id)}
+                  className="delete-button"
+                >
+                  削除
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="no-todos-message">
+          TODOはありません。新しく追加しませんか？
+        </p>
+      )}
     </div>
   );
 }
